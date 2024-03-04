@@ -985,9 +985,6 @@ char *match(char *p, char *pattern, char *decode)
                     p2 = match_expression(p, &instruction_value);
                     if (p2 == NULL)
                         return NULL;
-                    c = instruction_value - (address + 2);
-                    if (undefined == 0 && (c < -128 || c > 127))
-                        return NULL;
                     p = p2;
                 } else {
                     return NULL;
