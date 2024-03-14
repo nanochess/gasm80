@@ -34,13 +34,13 @@ There is only support for Z80 processors, and only are implemented the following
 	ENDIF
 	INCLUDE
 	INCLINE
-      INCBIN
+	INCBIN
 	TIMES
 	CPU Z80
 	EQU
 	DB
 	DW
-      RB
+	RB
 
 The following operators are implemented:
 
