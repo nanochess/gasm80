@@ -80,6 +80,8 @@ char *instruction_set[] = {
     "LD",       "A,(%i16)",     "x3a %i16",
     "LD",       "(IX%d8),%t8",  "xdd b01110%t8 %d8",
     "LD",       "(IY%d8),%t8",  "xfd b01110%t8 %d8",
+    "LD",       "(IX%d8),%i8",  "xdd b00110110 %d8 %i8",
+    "LD",       "(IY%d8),%i8",  "xfd b00110110 %d8 %i8",
     "LD",       "(BC),A",       "x02",
     "INC",      "%r16",         "b00%r160011",
     "INC",      "%r8",          "b00%r8100",
@@ -1380,6 +1382,8 @@ void do_assembly(char *fname)
             p++;
         }
         if (p > line && *(p - 1) == '\n')
+            p--;
+        if (p > line && *(p - 1) == '\r')
             p--;
         *p = '\0';
 

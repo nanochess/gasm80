@@ -483,6 +483,7 @@
 	ADD IX,IX
 	LD IX,($AABB)
 	DEC IX
+	LD (IX+5),$BB
 	ADD IX,SP
 	LD B,(IX+5)
 	LD C,(IX+5)
@@ -612,6 +613,7 @@
 	ADD IY,IY
 	LD IY,($AABB)
 	DEC IY
+	LD (IY+5),$BB
 	ADD IY,SP
 	LD B,(IY+5)
 	LD C,(IY+5)
