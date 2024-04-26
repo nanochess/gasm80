@@ -38,7 +38,7 @@ int instruction_register_2;
 int instruction_value;
 int instruction_value2;
 
-#define MAX_SIZE        256
+#define MAX_SIZE        4096
 
 char line[MAX_SIZE];
 char part[MAX_SIZE];

@@ -2,6 +2,7 @@
 ### by Oscar Toledo G. Mar/03/2024
 
 [https://nanochess.org/](https://nanochess.org/)
+
 [https://github.com/nanochess/gasm80](https://github.com/nanochess/gasm80)
 
 Gasm80 is a small assembler for Z80 programs. It was developed to support my new CVBasic compiler for Colecovision, in order to have a complete toolchain that can work in macOS and Linux.
@@ -14,8 +15,8 @@ It uses a command line syntax similar to nasm:
 
 There is also the -d option for defining labels:
 
-  -dLABEL
-  -dANOTHER_LABEL=1
+    -dLABEL
+    -dANOTHER_LABEL=1
 
 It returns a non-zero error code when the assembled file generates errors.
 
