@@ -46,6 +46,7 @@ char name[MAX_SIZE];
 char expr_name[MAX_SIZE];
 char undefined_name[MAX_SIZE];
 char global_label[MAX_SIZE];
+char included_file[MAX_SIZE];
 char *prev_p;
 char *p;
 
@@ -1306,7 +1307,7 @@ void reset_address(void)
 /*
  ** Include a binary file
  */
-void incbin(char *fname)
+void incbin(char *fname, long int offset, size_t length)
 {
     FILE *input;
     char buf[256];
@@ -1315,17 +1316,33 @@ void incbin(char *fname)
     
     input = fopen(fname, "rb");
     if (input == NULL) {
-        sprintf(buf, "Error: Cannot open '%s' for input", fname);
+        sprintf(buf, "Cannot open '%s' for input", fname);
         message(1, buf);
         return;
     }
-    
-    while ((size = fread(buf, 1, sizeof(buf), input)) > 0) {
+    if (length == SIZE_MAX) {
+        fseek(input, 0, SEEK_END);
+        length = ftell(input) - offset;
+    }
+    fseek(input, offset, SEEK_SET);
+/*  fprintf(stderr, "DEBUG: offset=%ld, length=%ld\n", offset, length); */
+    while (length > 0) {
+        if (length > sizeof(buf)) {
+            size = sizeof(buf);
+        } else {
+            size = length;
+        }
+        size = fread(buf, 1, size, input);
+        if (size == 0) {
+            sprintf(buf, "File '%s' shorter than required length", fname);
+            message(1, buf);
+            break;
+        }
+        length -= size;
         for (i = 0; i < size; i++) {
             emit_byte(buf[i]);
         }
     }
-    
     fclose(input);
 }
 
@@ -1345,6 +1362,8 @@ void do_assembly(char *fname)
     int pline;
     int include;
     int align;
+    long int offset;
+    size_t length;
 
     input = fopen(fname, "r");
     if (input == NULL) {
@@ -1564,12 +1583,58 @@ void do_assembly(char *fname)
                 break;
             }
             if (strcmp(part, "INCBIN") == 0) {
-                separate();
-                check_end(p);
-                if (part[0] != '"' || part[strlen(part) - 1] != '"') {
+                p = avoid_spaces(p);
+                if (*p != '"') {
                     message(1, "Missing quotes on incbin");
                     break;
                 }
+                p++;
+                p2 = included_file;
+                while (*p && *p != '"') {
+                    if (*p == '\\') {
+                        p++;
+                        if (*p)
+                            *p2++ = *p++;
+                    }
+                    *p2++ = *p++;
+                }
+                if (*p != '"') {
+                    message(1, "Missing quotes on incbin");
+                    break;
+                }
+                p++;
+                p = avoid_spaces(p);
+                offset = 0;
+                length = SIZE_MAX;
+                if (*p == ',') {
+                    p++;
+                    p = avoid_spaces(p);
+                    undefined = 0;
+                    p2 = match_expression(p, &instruction_value);
+                    if (p2 == NULL) {
+                        message(1, "Bad expression");
+                    } else if (undefined) {
+                        message(1, "Cannot use undefined labels");
+                    } else {
+                        offset = instruction_value;
+                        p = avoid_spaces(p2);
+                        if (*p == ',') {
+                            p++;
+                            p = avoid_spaces(p);
+                            undefined = 0;
+                            p2 = match_expression(p, &instruction_value);
+                            if (p2 == NULL) {
+                                message(1, "Bad expression");
+                            } else if (undefined) {
+                                message(1, "Cannot use undefined labels");
+                            } else {
+                                length = instruction_value;
+                                p = p2;
+                            }
+                        }
+                    }
+                }
+                check_end(p);
                 include = 2;
                 break;
             }
@@ -1666,7 +1731,7 @@ void do_assembly(char *fname)
         }
         if (include == 2) {
             part[strlen(part) - 1] = '\0';
-            incbin(part + 1);
+            incbin(included_file, offset, length);
         }
     }
     fclose(input);
