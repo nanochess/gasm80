@@ -1659,6 +1659,22 @@ void do_assembly(char *fname)
                 }
                 break;
             }
+            if (strcmp(part, "FORG") == 0) {
+                p = avoid_spaces(p);
+                undefined = 0;
+                p2 = match_expression(p, &instruction_value);
+                if (p2 == NULL) {
+                    message(1, "Bad expression");
+                } else if (undefined) {
+                    message(1, "Cannot use undefined labels");
+                } else {
+                    if (assembler_step == 2)
+                        fseek(output, instruction_value, SEEK_SET);
+                    first_time = 1;
+                    check_end(p2);
+                }
+                break;
+            }
             if (strcmp(part, "ALIGN") == 0) {
                 p = avoid_spaces(p);
                 undefined = 0;
