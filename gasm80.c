@@ -1598,6 +1598,7 @@ void do_assembly(char *fname)
                     }
                     *p2++ = *p++;
                 }
+                *p2 = '\0';
                 if (*p != '"') {
                     message(1, "Missing quotes on incbin");
                     break;
