@@ -1713,6 +1713,10 @@ void do_assembly(char *fname)
                     message(1, "non-constant expression");
                     break;
                 }
+                if (instruction_value < 0) {
+                    message(1, "negative value for TIMES");
+                    break;
+                }
                 times = instruction_value;
                 p = p2;
                 separate();
