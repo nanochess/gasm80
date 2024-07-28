@@ -1714,7 +1714,10 @@ void do_assembly(char *fname)
                     break;
                 }
                 if (instruction_value < 0) {
-                    message(1, "negative value for TIMES");
+                    char buffer[256];
+                    
+                    sprintf(buffer, "negative value (%d) for TIMES", instruction_value);
+                    message(1, buffer);
                     break;
                 }
                 times = instruction_value;
