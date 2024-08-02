@@ -1013,6 +1013,12 @@ char *match(char *p, char *pattern, char *decode)
             p = avoid_spaces(p);
         pattern++;
     }
+    /*
+     ** Not a match if there is something extra in the line.
+     ** It happens in the case LD A,R that can be confused with LD A,read_value.
+     */
+    if (*p != '\0' && *p != ';' && !isspace(*p))
+        return NULL;
 
     /*
      ** Instruction properly matched, now generate binary
