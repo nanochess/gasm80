@@ -1,0 +1,168 @@
+                        00001 	;
+                        00002 	; 6502 instruction set test for GASM80
+                        00003 	;
+                        00004 	; by Oscar Toledo G.
+                        00005 	; https://nanochess.org/
+                        00006 	;
+                        00007 	; Creation date: Aug/02/2024.
+                        00008 	;
+                        00009 
+                        00010 	CPU 6502
+                        00011 
+0000  00                00012 	BRX
+0001  1003              00013 	BPL $+5
+0003  20BBAA            00014 	JSR $AABB
+0006  3003              00015 	BMI $+5
+0008  40                00016 	RTI
+0009  5003              00017 	BVC $+5
+000B  60                00018 	RTS
+000C  7003              00019 	BVS $+5
+000E  9003              00020 	BCC $+5
+0010  A055              00021 	LDY #$55
+0012  A255              00022 	LDX #$55
+0014  B003              00023 	BCS $+5
+0016  C055              00024 	CPY #$55
+0018  D003              00025 	BNE $+5
+001A  E055              00026 	CPX #$55
+001C  F003              00027 	BEQ $+5
+001E  0166              00028 	ORA ($66,X)
+0020  1166              00029 	ORA ($66),Y
+0022  2166              00030 	AND ($66,X)
+0024  3166              00031 	AND ($66),Y
+0026  4166              00032 	EOR ($66,X)
+0028  5166              00033 	EOR ($66),Y
+002A  6166              00034 	ADC ($66,X)
+002C  7166              00035 	ADC ($66),Y
+002E  8166              00036 	STA ($66,X)
+0030  9166              00037 	STA ($66),Y
+0032  A166              00038 	LDA ($66,X)
+0034  B166              00039 	LDA ($66),Y
+0036  C166              00040 	CMP ($66,X)
+0038  D166              00041 	CMP ($66),Y
+003A  E166              00042 	SBC ($66,X)
+003C  F166              00043 	SBC ($66),Y
+003E  2466              00044 	BIT $66
+0040  8466              00045 	STY $66
+0042  9466              00046 	STY $66,X
+0044  A466              00047 	LDY $66
+0046  B466              00048 	LDY $66,X
+0048  C466              00049 	CPY $66
+004A  E466              00050 	CPX $66
+004C  0566              00051 	ORA $66
+004E  1566              00052 	ORA $66,X
+0050  2566              00053 	AND $66
+0052  3566              00054 	AND $66,X
+0054  4566              00055 	EOR $66
+0056  5566              00056 	EOR $66,X
+0058  6566              00057 	ADC $66
+005A  7566              00058 	ADC $66,X
+005C  8566              00059 	STA $66
+005E  9566              00060 	STA $66,X
+0060  A566              00061 	LDA $66
+0062  B566              00062 	LDA $66,X
+0064  C566              00063 	CMP $66
+0066  D566              00064 	CMP $66,X
+0068  E566              00065 	SBC $66
+006A  F566              00066 	SBC $66,X
+006C  0666              00067 	ASL $66
+006E  1666              00068 	ASL $66,X
+0070  2666              00069 	ROL $66
+0072  3666              00070 	ROL $66,X
+0074  4666              00071 	LSR $66
+0076  5666              00072 	LSR $66,X
+0078  6666              00073 	ROR $66
+007A  7666              00074 	ROR $66,X
+007C  8666              00075 	STX $66
+007E  9666              00076 	STX $66,X
+0080  A666              00077 	LDX $66
+0082  B666              00078 	LDX $66,X
+0084  C666              00079 	DEC $66
+0086  D666              00080 	DEC $66,X
+0088  E666              00081 	INC $66
+008A  F666              00082 	INC $66,X
+008C  08                00083 	PHP
+008D  18                00084 	CLC
+008E  28                00085 	PLP
+008F  38                00086 	SEC
+0090  48                00087 	PHA
+0091  58                00088 	CLI
+0092  68                00089 	PLA
+0093  78                00090 	SEI
+0094  88                00091 	DEY
+0095  98                00092 	TYA
+0096  A8                00093 	TAY
+0097  B8                00094 	CLV
+0098  C8                00095 	INY
+0099  D8                00096 	CLD
+009A  E8                00097 	INX
+009B  F8                00098 	SED
+009C  0955              00099 	ORA #$55
+009E  19BBAA            00100 	ORA $AABB,Y
+00A1  2955              00101 	AND #$55
+00A3  39BBAA            00102 	AND $AABB,Y
+00A6  4955              00103 	EOR #$55
+00A8  59BBAA            00104 	EOR $AABB,Y
+00AB  6955              00105 	ADC #$55
+00AD  79BBAA            00106 	ADC $AABB,Y
+00B0  99BBAA            00107 	STA $AABB,Y
+00B3  A955              00108 	LDA #$55
+00B5  B9BBAA            00109 	LDA $AABB,Y
+00B8  C955              00110 	CMP #$55
+00BA  D9BBAA            00111 	CMP $AABB,Y
+00BD  E955              00112 	SBC #$55
+00BF  F9BBAA            00113 	SBC $AABB,Y
+00C2  0A                00114 	ASL A
+00C3  2A                00115 	ROL A
+00C4  4A                00116 	LSR A
+00C5  6A                00117 	ROR A
+00C6  8A                00118 	TXA
+00C7  9A                00119 	TXS
+00C8  AA                00120 	TAX
+00C9  BA                00121 	TSX
+00CA  CA                00122 	DEX
+00CB  EA                00123 	NOP
+00CC  2CBBAA            00124 	BIT $AABB
+00CF  6CBBAA            00125 	JMP ($AABB)
+00D2  4CBBAA            00126 	JMP $AABB
+00D5  8CBBAA            00127 	STY $AABB
+00D8  ACBBAA            00128 	LDY $AABB
+00DB  BCBBAA            00129 	LDY $AABB,X
+00DE  CCBBAA            00130 	CPY $AABB
+00E1  ECBBAA            00131 	CPX $AABB
+00E4  0DBBAA            00132 	ORA $AABB
+00E7  1DBBAA            00133 	ORA $AABB,X
+00EA  2DBBAA            00134 	AND $AABB
+00ED  3DBBAA            00135 	AND $AABB,X
+00F0  4DBBAA            00136 	EOR $AABB
+00F3  5DBBAA            00137 	EOR $AABB,X
+00F6  6DBBAA            00138 	ADC $AABB
+00F9  7DBBAA            00139 	ADC $AABB,X
+00FC  8DBBAA            00140 	STA $AABB
+00FF  9DBBAA            00141 	STA $AABB,X
+0102  ADBBAA            00142 	LDA $AABB
+0105  BDBBAA            00143 	LDA $AABB,X
+0108  CDBBAA            00144 	CMP $AABB
+010B  DDBBAA            00145 	CMP $AABB,X
+010E  EDBBAA            00146 	SBC $AABB
+0111  FDBBAA            00147 	SBC $AABB,X
+0114  0EBBAA            00148 	ASL $AABB
+0117  1EBBAA            00149 	ASL $AABB,X
+011A  2EBBAA            00150 	ROL $AABB
+011D  3EBBAA            00151 	ROL $AABB,X
+0120  4EBBAA            00152 	LSR $AABB
+0123  5EBBAA            00153 	LSR $AABB,X
+0126  6EBBAA            00154 	ROR $AABB
+0129  7EBBAA            00155 	ROR $AABB,X
+012C  8EBBAA            00156 	STX $AABB
+012F  AEBBAA            00157 	LDX $AABB
+0132  BEBBAA            00158 	LDX $AABB,Y
+0135  CEBBAA            00159 	DEC $AABB
+0138  DEBBAA            00160 	DEC $AABB,X
+013B  EEBBAA            00161 	INC $AABB
+013E  FEBBAA            00162 	INC $AABB,X
+
+00000 ERRORS FOUND
+00000 WARNINGS FOUND
+
+00321 PROGRAM BYTES
+

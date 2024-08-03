@@ -7,6 +7,8 @@
 	; Creation date: Mar/03/2024.
 	;
 
+	CPU Z80
+
 	NOP
 	LD BC,$AABB
 	LD (BC),A

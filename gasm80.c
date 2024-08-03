@@ -13,7 +13,7 @@
 #include <string.h>
 #include <ctype.h>
 
-#define DEBUG
+/*#define DEBUG*/
 
 char *input_filename;
 int line_number;
@@ -25,6 +25,7 @@ int output_address;
 char *listing_filename;
 FILE *listing;
 
+enum {CPU_Z80, CPU_6502} processor;
 int assembler_step;
 int default_start_address;
 int start_address;
@@ -72,9 +73,164 @@ struct label *last_label;
 int undefined;
 
 /*
- ** Instruction using less bytes should appear first.
+ ** Instructions using less bytes should appear first.
  */
-char *instruction_set[] = {
+char *cpu_6502_instruction_set[] = {
+    "BRX",      "",             "x00",
+    "BPL",      "%a8",          "x10 %a8",
+    "JSR",      "%i16",         "x20 %i16",
+    "BMI",      "%a8",          "x30 %a8",
+    "RTI",      "",             "x40",
+    "BVC",      "%a8",          "x50 %a8",
+    "RTS",      "",             "x60",
+    "BVS",      "%a8",          "x70 %a8",
+    "BCC",      "%a8",          "x90 %a8",
+    "LDY",      "#%i8",         "xa0 %i8",
+    "LDX",      "#%i8",         "xa2 %i8",
+    "BCS",      "%a8",          "xb0 %a8",
+    "CPY",      "#%i8",         "xc0 %i8",
+    "BNE",      "%a8",          "xd0 %a8",
+    "CPX",      "#%i8",         "xe0 %i8",
+    "BEQ",      "%a8",          "xf0 %a8",
+    "ORA",      "(%i8,X)",      "x01 %i8",
+    "ORA",      "(%i8),Y",      "x11 %i8",
+    "AND",      "(%i8,X)",      "x21 %i8",
+    "AND",      "(%i8),Y",      "x31 %i8",
+    "EOR",      "(%i8,X)",      "x41 %i8",
+    "EOR",      "(%i8),Y",      "x51 %i8",
+    "ADC",      "(%i8,X)",      "x61 %i8",
+    "ADC",      "(%i8),Y",      "x71 %i8",
+    "STA",      "(%i8,X)",      "x81 %i8",
+    "STA",      "(%i8),Y",      "x91 %i8",
+    "LDA",      "(%i8,X)",      "xa1 %i8",
+    "LDA",      "(%i8),Y",      "xb1 %i8",
+    "CMP",      "(%i8,X)",      "xc1 %i8",
+    "CMP",      "(%i8),Y",      "xd1 %i8",
+    "SBC",      "(%i8,X)",      "xe1 %i8",
+    "SBC",      "(%i8),Y",      "xf1 %i8",
+    "BIT",      "%i8",          "x24 %i8",
+    "STY",      "%i8",          "x84 %i8",
+    "STY",      "%i8,X",        "x94 %i8",
+    "LDY",      "%i8",          "xa4 %i8",
+    "LDY",      "%i8,X",        "xb4 %i8",
+    "CPY",      "%i8",          "xc4 %i8",
+    "CPX",      "%i8",          "xe4 %i8",
+    "ORA",      "%i8",          "x05 %i8",
+    "ORA",      "%i8,X",        "x15 %i8",
+    "AND",      "%i8",          "x25 %i8",
+    "AND",      "%i8,X",        "x35 %i8",
+    "EOR",      "%i8",          "x45 %i8",
+    "EOR",      "%i8,X",        "x55 %i8",
+    "ADC",      "%i8",          "x65 %i8",
+    "ADC",      "%i8,X",        "x75 %i8",
+    "STA",      "%i8",          "x85 %i8",
+    "STA",      "%i8,X",        "x95 %i8",
+    "LDA",      "%i8",          "xa5 %i8",
+    "LDA",      "%i8,X",        "xb5 %i8",
+    "CMP",      "%i8",          "xc5 %i8",
+    "CMP",      "%i8,X",        "xd5 %i8",
+    "SBC",      "%i8",          "xe5 %i8",
+    "SBC",      "%i8,X",        "xf5 %i8",
+    "ASL",      "%i8",          "x06 %i8",
+    "ASL",      "%i8,X",        "x16 %i8",
+    "ROL",      "%i8",          "x26 %i8",
+    "ROL",      "%i8,X",        "x36 %i8",
+    "LSR",      "%i8",          "x46 %i8",
+    "LSR",      "%i8,X",        "x56 %i8",
+    "ROR",      "%i8",          "x66 %i8",
+    "ROR",      "%i8,X",        "x76 %i8",
+    "STX",      "%i8",          "x86 %i8",
+    "STX",      "%i8,X",        "x96 %i8",
+    "LDX",      "%i8",          "xa6 %i8",
+    "LDX",      "%i8,X",        "xb6 %i8",
+    "DEC",      "%i8",          "xc6 %i8",
+    "DEC",      "%i8,X",        "xd6 %i8",
+    "INC",      "%i8",          "xe6 %i8",
+    "INC",      "%i8,X",        "xf6 %i8",
+    "PHP",      "",             "x08",
+    "CLC",      "",             "x18",
+    "PLP",      "",             "x28",
+    "SEC",      "",             "x38",
+    "PHA",      "",             "x48",
+    "CLI",      "",             "x58",
+    "PLA",      "",             "x68",
+    "SEI",      "",             "x78",
+    "DEY",      "",             "x88",
+    "TYA",      "",             "x98",
+    "TAY",      "",             "xa8",
+    "CLV",      "",             "xb8",
+    "INY",      "",             "xc8",
+    "CLD",      "",             "xd8",
+    "INX",      "",             "xe8",
+    "SED",      "",             "xf8",
+    "ORA",      "#%i8",         "x09 %i8",
+    "ORA",      "%i16,Y",       "x19 %i16",
+    "AND",      "#%i8",         "x29 %i8",
+    "AND",      "%i16,Y",       "x39 %i16",
+    "EOR",      "#%i8",         "x49 %i8",
+    "EOR",      "%i16,Y",       "x59 %i16",
+    "ADC",      "#%i8",         "x69 %i8",
+    "ADC",      "%i16,Y",       "x79 %i16",
+    "STA",      "%i16,Y",       "x99 %i16",
+    "LDA",      "#%i8",         "xa9 %i8",
+    "LDA",      "%i16,Y",       "xb9 %i16",
+    "CMP",      "#%i8",         "xc9 %i8",
+    "CMP",      "%i16,Y",       "xd9 %i16",
+    "SBC",      "#%i8",         "xe9 %i8",
+    "SBC",      "%i16,Y",       "xf9 %i16",
+    "ASL",      "A",            "x0a",
+    "ROL",      "A",            "x2a",
+    "LSR",      "A",            "x4a",
+    "ROR",      "A",            "x6a",
+    "TXA",      "",             "x8a",
+    "TXS",      "",             "x9a",
+    "TAX",      "",             "xaa",
+    "TSX",      "",             "xba",
+    "DEX",      "",             "xca",
+    "NOP",      "",             "xea",
+    "BIT",      "%i16",         "x2c %i16",
+    "JMP",      "(%i16)",       "x6c %i16",
+    "JMP",      "%i16",         "x4c %i16",
+    "STY",      "%i16",         "x8c %i16",
+    "LDY",      "%i16",         "xac %i16",
+    "LDY",      "%i16,X",       "xbc %i16",
+    "CPY",      "%i16",         "xcc %i16",
+    "CPX",      "%i16",         "xec %i16",
+    "ORA",      "%i16",         "x0d %i16",
+    "ORA",      "%i16,X",       "x1d %i16",
+    "AND",      "%i16",         "x2d %i16",
+    "AND",      "%i16,X",       "x3d %i16",
+    "EOR",      "%i16",         "x4d %i16",
+    "EOR",      "%i16,X",       "x5d %i16",
+    "ADC",      "%i16",         "x6d %i16",
+    "ADC",      "%i16,X",       "x7d %i16",
+    "STA",      "%i16",         "x8d %i16",
+    "STA",      "%i16,X",       "x9d %i16",
+    "LDA",      "%i16",         "xad %i16",
+    "LDA",      "%i16,X",       "xbd %i16",
+    "CMP",      "%i16",         "xcd %i16",
+    "CMP",      "%i16,X",       "xdd %i16",
+    "SBC",      "%i16",         "xed %i16",
+    "SBC",      "%i16,X",       "xfd %i16",
+    "ASL",      "%i16",         "x0e %i16",
+    "ASL",      "%i16,X",       "x1e %i16",
+    "ROL",      "%i16",         "x2e %i16",
+    "ROL",      "%i16,X",       "x3e %i16",
+    "LSR",      "%i16",         "x4e %i16",
+    "LSR",      "%i16,X",       "x5e %i16",
+    "ROR",      "%i16",         "x6e %i16",
+    "ROR",      "%i16,X",       "x7e %i16",
+    "STX",      "%i16",         "x8e %i16",
+    "LDX",      "%i16",         "xae %i16",
+    "LDX",      "%i16,Y",       "xbe %i16",
+    "DEC",      "%i16",         "xce %i16",
+    "DEC",      "%i16,X",       "xde %i16",
+    "INC",      "%i16",         "xee %i16",
+    "INC",      "%i16,X",       "xfe %i16",
+    NULL,       NULL,           NULL,
+};
+
+char *cpu_z80_instruction_set[] = {
     "NOP",      "",             "x00",
     "LD",       "%t8,(IX%d8)",  "xdd b01%t8110 %d8",
     "LD",       "%t8,(IY%d8)",  "xfd b01%t8110 %d8",
@@ -878,12 +1034,14 @@ void emit_byte(int byte)
  */
 char *match(char *p, char *pattern, char *decode)
 {
+    char *start;
     char *p2;
     int c;
     int d;
     int bit;
     char *base;
     
+    start = p;
     undefined = 0;
     while (*pattern) {
 /*        fputc(*pattern, stdout);*/
@@ -960,6 +1118,10 @@ char *match(char *p, char *pattern, char *decode)
                     p2 = match_expression(p, &instruction_value);
                     if (p2 == NULL)
                         return NULL;
+                    if (processor == CPU_6502) {
+                        if ((start == p || p[-1] != '#') && (instruction_value & 0xff00) != 0)
+                            return NULL;
+                    }
                     p = p2;
                 } else if (*pattern == '1' && pattern[1] == '6') {
                     pattern += 2;
@@ -1277,27 +1439,53 @@ void process_instruction(void)
         }
         return;
     }
-    while (part[0]) {   /* Match against instruction set */
-        c = 0;
-        while (instruction_set[c] != NULL) {
-            if (strcmp(part, instruction_set[c]) == 0) {
-                p2 = match(p, instruction_set[c + 1], instruction_set[c + 2]);
-                if (p2 != NULL) {
-                    p = p2;
-                    break;
+    if (processor == CPU_Z80) {
+        while (part[0]) {   /* Match against instruction set */
+            c = 0;
+            while (cpu_z80_instruction_set[c] != NULL) {
+                if (strcmp(part, cpu_z80_instruction_set[c]) == 0) {
+                    p2 = match(p, cpu_z80_instruction_set[c + 1], cpu_z80_instruction_set[c + 2]);
+                    if (p2 != NULL) {
+                        p = p2;
+                        break;
+                    }
                 }
+                c += 3;
             }
-            c += 3;
+            if (cpu_z80_instruction_set[c] == NULL) {
+                char m[25 + MAX_SIZE];
+                
+                sprintf(m, "Undefined instruction '%s %s'", part, p);
+                message(1, m);
+                break;
+            } else {
+                p = p2;
+                separate();
+            }
         }
-        if (instruction_set[c] == NULL) {
-            char m[25 + MAX_SIZE];
-            
-            sprintf(m, "Undefined instruction '%s %s'", part, p);
-            message(1, m);
-            break;
-        } else {
-            p = p2;
-            separate();
+    } else {
+        while (part[0]) {   /* Match against instruction set */
+            c = 0;
+            while (cpu_6502_instruction_set[c] != NULL) {
+                if (strcmp(part, cpu_6502_instruction_set[c]) == 0) {
+                    p2 = match(p, cpu_6502_instruction_set[c + 1], cpu_6502_instruction_set[c + 2]);
+                    if (p2 != NULL) {
+                        p = p2;
+                        break;
+                    }
+                }
+                c += 3;
+            }
+            if (cpu_6502_instruction_set[c] == NULL) {
+                char m[25 + MAX_SIZE];
+                
+                sprintf(m, "Undefined instruction '%s %s'", part, p);
+                message(1, m);
+                break;
+            } else {
+                p = p2;
+                separate();
+            }
         }
     }
 }
@@ -1574,9 +1762,15 @@ void do_assembly(char *fname)
                 break;
             }
             if (strcmp(part, "CPU") == 0) {
-                p = avoid_spaces(p);
-                if (memcmp(p, "Z80", 4) != 0)
+                separate();
+                check_end(p);
+                if (strcmp(part, "Z80") == 0) {
+                    processor = CPU_Z80;
+                } else if (strcmp(part, "6502") == 0) {
+                    processor = CPU_6502;
+                } else {
                     message(1, "Unsupported processor requested");
+                }
                 break;
             }
             if (strcmp(part, "INCLUDE") == 0) {
@@ -1888,6 +2082,7 @@ int main(int argc, char *argv[])
      */
     assembler_step = 1;
     first_time = 1;
+    processor = CPU_Z80;
     do_assembly(ifname);
     if (!errors) {
         
