@@ -28,21 +28,21 @@ Local labels are supported, and should start with period. The local labels final
 
 There is only support for Z80 and 6502 processors, and only are implemented the following directives:
 
-	IFDEF
-	IFNDEF
-	IF
-	ELSE
-	ENDIF
-	INCLUDE
-	INCLINE
-	INCBIN
-	TIMES
-	CPU Z80
-      CPU 6502
-	EQU
-	DB
-	DW
-	RB
+    IFDEF
+    IFNDEF
+    IF
+    ELSE
+    ENDIF
+    INCLUDE
+    INCLINE
+    INCBIN
+    TIMES
+    CPU Z80
+    CPU 6502
+    EQU
+    DB
+    DW
+    RB
 
 The following operators are implemented:
 
@@ -78,4 +78,4 @@ The assembler is easily built in any platform because it uses standard C:
 
     gcc g80asm.c -o g80asm
 
-I've included test caseS in the 'test' subdirectory that includes the complete Z80 and 6502 instruction set.
+I've included test cases in the 'test' subdirectory that includes the complete Z80 and 6502 instruction set.
