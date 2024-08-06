@@ -76,22 +76,29 @@ int undefined;
  ** Instructions using less bytes should appear first.
  */
 char *cpu_6502_instruction_set[] = {
-    "BRX",      "",             "x00",
-    "BPL",      "%a8",          "x10 %a8",
-    "JSR",      "%i16",         "x20 %i16",
-    "BMI",      "%a8",          "x30 %a8",
-    "RTI",      "",             "x40",
-    "BVC",      "%a8",          "x50 %a8",
-    "RTS",      "",             "x60",
-    "BVS",      "%a8",          "x70 %a8",
-    "BCC",      "%a8",          "x90 %a8",
     "LDY",      "#%i8",         "xa0 %i8",
     "LDX",      "#%i8",         "xa2 %i8",
-    "BCS",      "%a8",          "xb0 %a8",
     "CPY",      "#%i8",         "xc0 %i8",
-    "BNE",      "%a8",          "xd0 %a8",
     "CPX",      "#%i8",         "xe0 %i8",
+    "ORA",      "#%i8",         "x09 %i8",
+    "AND",      "#%i8",         "x29 %i8",
+    "EOR",      "#%i8",         "x49 %i8",
+    "ADC",      "#%i8",         "x69 %i8",
+    "LDA",      "#%i8",         "xa9 %i8",
+    "CMP",      "#%i8",         "xc9 %i8",
+    "SBC",      "#%i8",         "xe9 %i8",
+    "BPL",      "%a8",          "x10 %a8",
+    "BMI",      "%a8",          "x30 %a8",
+    "BCC",      "%a8",          "x90 %a8",
+    "BCS",      "%a8",          "xb0 %a8",
+    "BNE",      "%a8",          "xd0 %a8",
     "BEQ",      "%a8",          "xf0 %a8",
+    "BVC",      "%a8",          "x50 %a8",
+    "BVS",      "%a8",          "x70 %a8",
+    "BRX",      "",             "x00",
+    "JSR",      "%i16",         "x20 %i16",
+    "RTI",      "",             "x40",
+    "RTS",      "",             "x60",
     "ORA",      "(%i8,X)",      "x01 %i8",
     "ORA",      "(%i8),Y",      "x11 %i8",
     "AND",      "(%i8,X)",      "x21 %i8",
@@ -163,20 +170,13 @@ char *cpu_6502_instruction_set[] = {
     "CLD",      "",             "xd8",
     "INX",      "",             "xe8",
     "SED",      "",             "xf8",
-    "ORA",      "#%i8",         "x09 %i8",
     "ORA",      "%i16,Y",       "x19 %i16",
-    "AND",      "#%i8",         "x29 %i8",
     "AND",      "%i16,Y",       "x39 %i16",
-    "EOR",      "#%i8",         "x49 %i8",
     "EOR",      "%i16,Y",       "x59 %i16",
-    "ADC",      "#%i8",         "x69 %i8",
     "ADC",      "%i16,Y",       "x79 %i16",
     "STA",      "%i16,Y",       "x99 %i16",
-    "LDA",      "#%i8",         "xa9 %i8",
     "LDA",      "%i16,Y",       "xb9 %i16",
-    "CMP",      "#%i8",         "xc9 %i8",
     "CMP",      "%i16,Y",       "xd9 %i16",
-    "SBC",      "#%i8",         "xe9 %i8",
     "SBC",      "%i16,Y",       "xf9 %i16",
     "ASL",      "A",            "x0a",
     "ROL",      "A",            "x2a",
@@ -1520,7 +1520,9 @@ void incbin(char *fname, long int offset, size_t length)
         length = ftell(input) - offset;
     }
     fseek(input, offset, SEEK_SET);
-/*  fprintf(stderr, "DEBUG: offset=%ld, length=%ld\n", offset, length); */
+#ifdef DEBUG
+    fprintf(stderr, "DEBUG: offset=%ld, length=%ld\n", offset, length);
+#endif
     while (length > 0) {
         if (length > sizeof(buf)) {
             size = sizeof(buf);
@@ -1645,7 +1647,7 @@ void do_assembly(char *fname)
                                 } else {
                                     if (last_label->value != instruction_value) {
 #ifdef DEBUG
-/*                                        fprintf(stderr, "Woops: label '%s' changed value from %04x to %04x\n", last_label->name, last_label->value, instruction_value);*/
+                                        fprintf(stderr, "Woops: label '%s' changed value from %04x to %04x\n", last_label->name, last_label->value, instruction_value);
 #endif
                                         change = 1;
                                     }
@@ -1658,7 +1660,7 @@ void do_assembly(char *fname)
                     }
                     if (first_time == 1) {
 #ifdef DEBUG
-                        /*                        fprintf(stderr, "First time '%s' at line %d\n", line, line_number);*/
+                        fprintf(stderr, "First time '%s' at line %d\n", line, line_number);
 #endif
                         first_time = 0;
                         reset_address();
@@ -1682,7 +1684,7 @@ void do_assembly(char *fname)
                         } else {
                             if (last_label->value != address) {
 #ifdef DEBUG
-/*                                fprintf(stderr, "Woops: label '%s' changed value from %04x to %04x\n", last_label->name, last_label->value, address);*/
+                                fprintf(stderr, "Woops: label '%s' changed value from %04x to %04x\n", last_label->name, last_label->value, address);
 #endif
                                 change = 1;
                             }
@@ -1757,7 +1759,7 @@ void do_assembly(char *fname)
             }
             if (avoid_level != -1 && level >= avoid_level) {
 #ifdef DEBUG
-                /*fprintf(stderr, "Avoiding '%s'\n", line);*/
+                fprintf(stderr, "Avoiding '%s'\n", line);
 #endif
                 break;
             }
@@ -1896,7 +1898,7 @@ void do_assembly(char *fname)
             }
             if (first_time == 1) {
 #ifdef DEBUG
-                /*fprintf(stderr, "First time '%s' at line %d\n", line, line_number);*/
+                fprintf(stderr, "First time '%s' at line %d\n", line, line_number);
 #endif
                 first_time = 0;
                 reset_address();
