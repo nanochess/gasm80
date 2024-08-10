@@ -149,7 +149,7 @@ char *cpu_6502_instruction_set[] = {
     "STX",      "%i8",          "x86 %i8",
     "STX",      "%i8,X",        "x96 %i8",
     "LDX",      "%i8",          "xa6 %i8",
-    "LDX",      "%i8,X",        "xb6 %i8",
+    "LDX",      "%i8,Y",        "xb6 %i8",
     "DEC",      "%i8",          "xc6 %i8",
     "DEC",      "%i8,X",        "xd6 %i8",
     "INC",      "%i8",          "xe6 %i8",
