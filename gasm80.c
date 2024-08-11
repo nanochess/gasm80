@@ -147,7 +147,7 @@ char *cpu_6502_instruction_set[] = {
     "ROR",      "%i8",          "x66 %i8",
     "ROR",      "%i8,X",        "x76 %i8",
     "STX",      "%i8",          "x86 %i8",
-    "STX",      "%i8,X",        "x96 %i8",
+    "STX",      "%i8,Y",        "x96 %i8",
     "LDX",      "%i8",          "xa6 %i8",
     "LDX",      "%i8,Y",        "xb6 %i8",
     "DEC",      "%i8",          "xc6 %i8",
