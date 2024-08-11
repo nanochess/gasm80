@@ -186,6 +186,7 @@ char *cpu_6502_instruction_set[] = {
     "LDA.W",    "%i16,Y",       "xb9 %i16",
     "CMP.W",    "%i16,Y",       "xd9 %i16",
     "SBC.W",    "%i16,Y",       "xf9 %i16",
+    "BIT.W",    "%i16",         "x2c %i16",
     "ASL",      "A",            "x0a",
     "ROL",      "A",            "x2a",
     "LSR",      "A",            "x4a",
