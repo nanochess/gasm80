@@ -73,6 +73,22 @@ struct label *last_label;
 int undefined;
 
 /*
+ ** For 6502, the jump instructions .L are automatically expanded as needed
+ ** (saves a ton of bytes along CVBasic)
+ */
+struct extend_jump {
+    struct extend_jump *next;
+    int address;
+    int target;
+    int relative;
+};
+
+struct extend_jump *first_jump;
+struct extend_jump *current_jump;
+struct extend_jump *last_jump;
+int building_jumps;
+
+/*
  ** Instructions using less bytes should appear first.
  */
 char *cpu_6502_instruction_set[] = {
@@ -95,6 +111,14 @@ char *cpu_6502_instruction_set[] = {
     "BEQ",      "%a8",          "xf0 %a8",
     "BVC",      "%a8",          "x50 %a8",
     "BVS",      "%a8",          "x70 %a8",
+    "BPL.L",    "%i16",         "x10 %a16",
+    "BMI.L",    "%i16",         "x30 %a16",
+    "BCC.L",    "%i16",         "x90 %a16",
+    "BCS.L",    "%i16",         "xb0 %a16",
+    "BNE.L",    "%i16",         "xd0 %a16",
+    "BEQ.L",    "%i16",         "xf0 %a16",
+    "BVC.L",    "%i16",         "x50 %a16",
+    "BVS.L",    "%i16",         "x70 %a16",
     "BRX",      "",             "x00",
     "JSR",      "%i16",         "x20 %i16",
     "RTI",      "",             "x40",
@@ -1085,6 +1109,8 @@ char *match(char *p, char *pattern, char *decode)
     int d;
     int bit;
     char *base;
+    unsigned char bytes[8];
+    int which;
     
     start = p;
     undefined = 0;
@@ -1230,6 +1256,7 @@ char *match(char *p, char *pattern, char *decode)
     /*
      ** Instruction properly matched, now generate binary
      */
+    which = 0;
     base = decode;
     while (*decode) {
         decode = avoid_spaces(decode);
@@ -1243,7 +1270,7 @@ char *match(char *p, char *pattern, char *decode)
             if (d > 9)
                 d -= 7;
             c = (c << 4) | d;
-            emit_byte(c);
+            bytes[which++] = c;
             decode += 3;
         } else {    /* Binary */
             if (*decode == 'b')
@@ -1310,10 +1337,47 @@ char *match(char *p, char *pattern, char *decode)
                         c |= (instruction_value >> 3) << (5 - bit);
                         bit += 3;
                     } else if (decode[0] == 'a') {
-                        decode += 2;
-                        c = instruction_value - (address + 1);
-                        if (assembler_step == 2 && (c < -128 || c > 127))
-                            message(1, "relative jump too long");
+                        if (decode[1] == '8') {
+                            decode += 2;
+                            c = instruction_value - (address + 2);
+                            if (assembler_step == 2 && (c < -128 || c > 127))
+                                message(1, "relative jump too long");
+                        } else {
+                            struct extend_jump *new_jump;
+                            
+                            decode += 3;
+                            
+                            if (building_jumps) {
+                                new_jump = malloc(sizeof(struct extend_jump));
+                                new_jump->next = NULL;
+                                new_jump->address = address - 1;
+                                new_jump->target = instruction_value;
+                                new_jump->relative = 1;
+                                if (first_jump == NULL)
+                                    first_jump = new_jump;
+                                if (last_jump != NULL)
+                                    last_jump->next = new_jump;
+                                last_jump = new_jump;
+                            } else {
+                                new_jump = current_jump;
+                                if (new_jump == NULL) {
+                                    fprintf(stderr, "decode: internal error 3. New jump instructions!\n");
+                                    exit(1);
+                                }
+                                new_jump->address = address - 1;
+                                new_jump->target = instruction_value;
+                                current_jump = current_jump->next;
+                            }
+                            if (new_jump->relative) {
+                                c = instruction_value - (address + 2);
+                            } else {
+                                bytes[0] ^= 0x20;
+                                bytes[which++] = 0x03;
+                                bytes[which++] = 0x4c;
+                                c = instruction_value;
+                                d = 1;
+                            }
+                        }
                         break;
                     } else if (decode[0] == 'c') {
                         decode++;
@@ -1329,12 +1393,15 @@ char *match(char *p, char *pattern, char *decode)
                     break;
                 }
             }
-            emit_byte(c);
+            bytes[which++] = c;
             if (d == 1) {
                 d = 0;
-                emit_byte(c >> 8);
+                bytes[which++] = c >> 8;
             }
         }
+    }
+    for (c = 0; c < which; c++) {
+        emit_byte(bytes[c]);
     }
     if (assembler_step == 2) {
         if (undefined) {
@@ -1674,13 +1741,22 @@ void do_assembly(char *fname)
                             message(1, "bad expression");
                         } else {
                             if (assembler_step == 1) {
-                                if (find_label(name)) {
-                                    char m[18 + MAX_SIZE];
-                                    
-                                    sprintf(m, "Redefined label '%s'", name);
-                                    message(1, m);
+                                if (building_jumps) {
+                                    if (find_label(name)) {
+                                        char m[18 + MAX_SIZE];
+                                        
+                                        sprintf(m, "Redefined label '%s'", name);
+                                        message(1, m);
+                                    } else {
+                                        last_label = define_label(name, instruction_value);
+                                    }
                                 } else {
-                                    last_label = define_label(name, instruction_value);
+                                    last_label = find_label(name);
+                                    if (last_label == NULL) {
+                                        fprintf(stderr, "Error: label not found before '%s'\n", name);
+                                        exit(1);
+                                    }
+                                    last_label->value = instruction_value;
                                 }
                             } else {
                                 last_label = find_label(name);
@@ -1711,13 +1787,22 @@ void do_assembly(char *fname)
                         reset_address();
                     }
                     if (assembler_step == 1) {
-                        if (find_label(name)) {
-                            char m[18 + MAX_SIZE];
-                            
-                            sprintf(m, "Redefined label '%s'", name);
-                            message(1, m);
+                        if (building_jumps) {
+                            if (find_label(name)) {
+                                char m[18 + MAX_SIZE];
+                                
+                                sprintf(m, "Redefined label '%s'", name);
+                                message(1, m);
+                            } else {
+                                last_label = define_label(name, address);
+                            }
                         } else {
-                            last_label = define_label(name, address);
+                            last_label = find_label(name);
+                            if (last_label == NULL) {
+                                fprintf(stderr, "Error: label not found before '%s'\n", name);
+                                exit(1);
+                            }
+                            last_label->value = address;
                         }
                     } else {
                         last_label = find_label(name);
@@ -2127,10 +2212,61 @@ int main(int argc, char *argv[])
     /*
      ** Do first step of assembly
      */
+    
+    first_jump = NULL;
+    current_jump = NULL;
+    last_jump = NULL;
+    building_jumps = 1;
+    
     assembler_step = 1;
     first_time = 1;
     processor = CPU_Z80;
     do_assembly(ifname);
+    
+    if (!errors) {
+        if (first_jump != NULL) {
+            fprintf(stderr, "Expanding jumps as needed for 6502: ");
+        }
+        while (!errors && first_jump != NULL) { /* This will happen only for 6502 CPUs */
+            int all_good;
+            int c;
+            
+            fprintf(stderr, ".");
+
+            building_jumps = 0;
+            current_jump = first_jump;
+            assembler_step = 1;
+            first_time = 1;
+            processor = CPU_Z80;
+            do_assembly(ifname);
+            
+            all_good = 1;
+            current_jump = first_jump;
+            while (current_jump != NULL) {
+                if (current_jump->relative) {
+                    c = current_jump->target - (current_jump->address + 2);
+                    if (c < - 128 || c > 127) {
+                        current_jump->relative = 0; /* Expand the relative jump to rel.jump+abs.jump */
+                        all_good = 0;
+                    }
+                }
+                current_jump = current_jump->next;
+            }
+            if (all_good)
+                break;
+            
+            building_jumps = 0;
+            current_jump = first_jump;
+            assembler_step = 1;
+            first_time = 1;
+            processor = CPU_Z80;
+            do_assembly(ifname);
+        }
+        if (!errors && first_jump != NULL) {
+            fprintf(stderr, " Done!\n");
+        }
+    }
+    
     if (!errors) {
         
         /*
@@ -2157,6 +2293,8 @@ int main(int argc, char *argv[])
             }
             assembler_step = 2;
             first_time = 1;
+            building_jumps = 0;
+            current_jump = first_jump;
             do_assembly(ifname);
             
             if (listing != NULL && change == 0) {
