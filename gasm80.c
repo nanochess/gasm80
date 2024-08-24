@@ -515,7 +515,7 @@ char *regs[] = {
     "M",
 };
 
-void message();
+void message(int error, char *message);
 char *match_register(char *, int, int *);
 char *match_expression(char *, int *);
 char *match_expression_level1(char *, int *);
