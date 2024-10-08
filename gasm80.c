@@ -25,6 +25,9 @@ int output_address;
 char *listing_filename;
 FILE *listing;
 
+char *symbol_filename;
+FILE *symbol;
+
 enum {CPU_Z80, CPU_6502} processor;
 int assembler_step;
 int default_start_address;
@@ -695,7 +698,10 @@ void sort_labels(struct label *node)
 {
     if (node->left != NULL)
         sort_labels(node->left);
-    fprintf(listing, "%-20s %04x\n", node->name, node->value);
+    if (listing != NULL)
+        fprintf(listing, "%-20s %04x\n", node->name, node->value);
+    if (symbol != NULL)
+        fprintf(symbol, "%s: equ %08xh\n", node->name, node->value);
     if (node->right != NULL)
         sort_labels(node->right);
 }
@@ -2206,6 +2212,7 @@ int main(int argc, char *argv[])
         fprintf(stderr, "Typical usage:\n");
         fprintf(stderr, "gasm80 game.asm -o game.rom\n");
         fprintf(stderr, "gasm80 game.asm -o game.rom -l game.lst\n");
+        fprintf(stderr, "gasm80 game.asm -o game.rom -l game.lst -s game.sym\n");
         exit(1);
     }
     
@@ -2215,6 +2222,7 @@ int main(int argc, char *argv[])
     ifname = NULL;
     output_filename = NULL;
     listing_filename = NULL;
+    symbol_filename = NULL;
     default_start_address = 0;
     c = 1;
     while (c < argc) {
@@ -2259,6 +2267,18 @@ int main(int argc, char *argv[])
                     exit(1);
                 } else {
                     listing_filename = argv[c];
+                    c++;
+                }
+            } else if (d == 's') {  /* Symbol file name */
+                c++;
+                if (c >= argc) {
+                    fprintf(stderr, "Error: no argument for -s\n");
+                    exit(1);
+                } else if (symbol_filename != NULL) {
+                    fprintf(stderr, "Error: already a -s argument is present\n");
+                    exit(1);
+                } else {
+                    symbol_filename = argv[c];
                     c++;
                 }
             } else if (d == 'd') {  /* Define label */
@@ -2379,6 +2399,13 @@ int main(int argc, char *argv[])
                     exit(1);
                 }
             }
+            if (symbol_filename != NULL) {
+                symbol = fopen(symbol_filename, "w");
+                if (symbol == NULL) {
+                    fprintf(stderr, "Error: couldn't open '%s' as symbol file\n", symbol_filename);
+                    exit(1);
+                }
+            }
             output = fopen(output_filename, "wb");
             if (output == NULL) {
                 fprintf(stderr, "Error: couldn't open '%s' as output file\n", output_filename);
@@ -2390,18 +2417,23 @@ int main(int argc, char *argv[])
             current_jump = first_jump;
             do_assembly(ifname);
             
-            if (listing != NULL && change == 0) {
-                fprintf(listing, "\n%05d ERRORS FOUND\n", errors);
-                fprintf(listing, "%05d WARNINGS FOUND\n\n", warnings);
-                fprintf(listing, "%05d PROGRAM BYTES\n\n", bytes);
+            if (change == 0) {
+                if (listing != NULL) {
+                    fprintf(listing, "\n%05d ERRORS FOUND\n", errors);
+                    fprintf(listing, "%05d WARNINGS FOUND\n\n", warnings);
+                    fprintf(listing, "%05d PROGRAM BYTES\n\n", bytes);
+                }
                 if (label_list != NULL) {
-                    fprintf(listing, "%-20s VALUE/ADDRESS\n\n", "LABEL");
+                    if (listing != NULL)
+                        fprintf(listing, "%-20s VALUE/ADDRESS\n\n", "LABEL");
                     sort_labels(label_list);
                 }
             }
             fclose(output);
             if (listing_filename != NULL)
                 fclose(listing);
+            if (symbol != NULL)
+                fclose(symbol);
             if (change) {
                 change_number++;
                 if (change_number == 5) {

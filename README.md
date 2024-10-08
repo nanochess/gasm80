@@ -11,7 +11,7 @@ It was developed in a single day based on my tinyasm 8088 assembler available at
 
 It uses a command line syntax similar to nasm:
 
-    gasm80 game.asm -o game.rom -l game.lst
+    gasm80 game.asm -o game.rom -l game.lst -s game.sym
 
 There is also the -d option for defining labels:
 
@@ -71,6 +71,9 @@ The following numbers are implemented:
 
 This assembler won't win a speed test ;) because the internal implementation uses a linear search for the instruction set, and it is also implemented as a kind of regular expression subset for easier coding.
 
+The assembler also supports the undocumented Z80 instructions (IXH/IXL/IYH/IYL and the SLL instruction).
+
+The symbol file generated is compatible with the format accepted by the OpenMSX debugger.
 
 ### Building the assembler
 
