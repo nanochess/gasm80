@@ -76,6 +76,6 @@ This assembler won't win a speed test ;) because the internal implementation use
 
 The assembler is easily built in any platform because it uses standard C:
 
-    gcc g80asm.c -o g80asm
+    gcc gasm80.c -o gasm80
 
 I've included test cases in the 'test' subdirectory that includes the complete Z80 and 6502 instruction set.
