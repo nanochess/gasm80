@@ -73,9 +73,9 @@
 	ROR $66
 	ROR $66,X
 	STX $66
-	STX $66,X
+	STX $66,Y
 	LDX $66
-	LDX $66,X
+	LDX $66,Y
 	DEC $66
 	DEC $66,X
 	INC $66
@@ -160,3 +160,70 @@
 	DEC $aabb,X
 	INC $aabb
 	INC $aabb,X
+
+	; Undocumented instructions
+	SLO ($66,X)
+	SLO ($66),Y
+	RLA ($66,X)
+	RLA ($66),Y
+	SRE ($66,X)
+	SRE ($66),Y
+	RRA ($66,X)
+	RRA ($66),Y
+	SAX ($66,X)
+	SHA ($66),Y
+	LAX ($66,X)
+	LAX ($66),Y
+	DCP ($66,X)
+	DCP ($66),Y
+	ISC ($66,X)
+	ISC ($66),Y
+	SLO $66
+	SLO $66,X
+	RLA $66
+	RLA $66,X
+	SRE $66
+	SRE $66,X
+	RRA $66
+	RRA $66,X
+	SAX $66
+	SAX $66,Y
+	LAX $66
+	LAX $66,Y
+	DCP $66
+	DCP $66,X
+	ISC $66
+	ISC $66,X
+	ANC #$55
+	SLO $aabb,Y
+	RLA $aabb,Y
+	ALR #$55
+	SRE $aabb,Y
+	ARR #$55
+	RRA $aabb,Y
+	ANE #$55
+	TAS $aabb,Y
+	LXA #$55
+	LAS $aabb,Y
+	SBX #$55
+	DCP $aabb,Y
+	USBC #$55
+	ISC $aabb,Y
+	SHY $aabb,X
+	SHX $aabb,Y
+	SLO $aabb
+	SLO $aabb,X
+	RLA $aabb
+	RLA $aabb,X
+	SRE $aabb
+	SRE $aabb,X
+	RRA $aabb
+	RRA $aabb,X
+	SAX $aabb
+	SHA $aabb,Y
+	LAX $aabb
+	LAX $aabb,Y
+	DCP $aabb
+	DCP $aabb,X
+	ISC $aabb
+	ISC $aabb,X

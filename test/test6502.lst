@@ -73,9 +73,9 @@
 0078  6666              00073 	ROR $66
 007A  7666              00074 	ROR $66,X
 007C  8666              00075 	STX $66
-007E  9666              00076 	STX $66,X
+007E  9666              00076 	STX $66,Y
 0080  A666              00077 	LDX $66
-0082  B666              00078 	LDX $66,X
+0082  B666              00078 	LDX $66,Y
 0084  C666              00079 	DEC $66
 0086  D666              00080 	DEC $66,X
 0088  E666              00081 	INC $66
@@ -160,9 +160,76 @@
 0138  DEBBAA            00160 	DEC $AABB,X
 013B  EEBBAA            00161 	INC $AABB
 013E  FEBBAA            00162 	INC $AABB,X
+0141                    00163 
+0141                    00164 	; Undocumented instructions
+0141  0366              00165 	SLO ($66,X)
+0143  1366              00166 	SLO ($66),Y
+0145  2366              00167 	RLA ($66,X)
+0147  3366              00168 	RLA ($66),Y
+0149  4366              00169 	SRE ($66,X)
+014B  5366              00170 	SRE ($66),Y
+014D  6366              00171 	RRA ($66,X)
+014F  7366              00172 	RRA ($66),Y
+0151  8366              00173 	SAX ($66,X)
+0153  9366              00174 	SHA ($66),Y
+0155  A366              00175 	LAX ($66,X)
+0157  B366              00176 	LAX ($66),Y
+0159  C366              00177 	DCP ($66,X)
+015B  D366              00178 	DCP ($66),Y
+015D  E366              00179 	ISC ($66,X)
+015F  F366              00180 	ISC ($66),Y
+0161  0766              00181 	SLO $66
+0163  1766              00182 	SLO $66,X
+0165  2766              00183 	RLA $66
+0167  3766              00184 	RLA $66,X
+0169  4766              00185 	SRE $66
+016B  5766              00186 	SRE $66,X
+016D  6766              00187 	RRA $66
+016F  7766              00188 	RRA $66,X
+0171  8766              00189 	SAX $66
+0173  9766              00190 	SAX $66,Y
+0175  A766              00191 	LAX $66
+0177  B766              00192 	LAX $66,Y
+0179  C766              00193 	DCP $66
+017B  D766              00194 	DCP $66,X
+017D  E766              00195 	ISC $66
+017F  F766              00196 	ISC $66,X
+0181  0B55              00197 	ANC #$55
+0183  1BBBAA            00198 	SLO $AABB,Y
+0186  3BBBAA            00199 	RLA $AABB,Y
+0189  4B55              00200 	ALR #$55
+018B  5BBBAA            00201 	SRE $AABB,Y
+018E  6B55              00202 	ARR #$55
+0190  7BBBAA            00203 	RRA $AABB,Y
+0193  8B55              00204 	ANE #$55
+0195  9BBBAA            00205 	TAS $AABB,Y
+0198  AB55              00206 	LXA #$55
+019A  BBBBAA            00207 	LAS $AABB,Y
+019D  CB55              00208 	SBX #$55
+019F  DBBBAA            00209 	DCP $AABB,Y
+01A2  EB55              00210 	USBC #$55
+01A4  FBBBAA            00211 	ISC $AABB,Y
+01A7  9CBBAA            00212 	SHY $AABB,X
+01AA  9EBBAA            00213 	SHX $AABB,Y
+01AD  0FBBAA            00214 	SLO $AABB
+01B0  1FBBAA            00215 	SLO $AABB,X
+01B3  2FBBAA            00216 	RLA $AABB
+01B6  3FBBAA            00217 	RLA $AABB,X
+01B9  4FBBAA            00218 	SRE $AABB
+01BC  5FBBAA            00219 	SRE $AABB,X
+01BF  6FBBAA            00220 	RRA $AABB
+01C2  7FBBAA            00221 	RRA $AABB,X
+01C5  8FBBAA            00222 	SAX $AABB
+01C8  9FBBAA            00223 	SHA $AABB,Y
+01CB  AFBBAA            00224 	LAX $AABB
+01CE  BFBBAA            00225 	LAX $AABB,Y
+01D1  CFBBAA            00226 	DCP $AABB
+01D4  DFBBAA            00227 	DCP $AABB,X
+01D7  EFBBAA            00228 	ISC $AABB
+01DA  FFBBAA            00229 	ISC $AABB,X
 
 00000 ERRORS FOUND
 00000 WARNINGS FOUND
 
-00321 PROGRAM BYTES
+00477 PROGRAM BYTES
 

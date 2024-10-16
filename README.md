@@ -71,7 +71,7 @@ The following numbers are implemented:
 
 This assembler won't win a speed test ;) because the internal implementation uses a linear search for the instruction set, and it is also implemented as a kind of regular expression subset for easier coding.
 
-The assembler also supports the undocumented Z80 instructions (IXH/IXL/IYH/IYL and the SLL instruction).
+The assembler also supports the undocumented Z80 instructions (IXH/IXL/IYH/IYL and the SLL instruction), and the undocumented 6502 instructions.
 
 The symbol file generated is compatible with the format accepted by the OpenMSX debugger.
 
