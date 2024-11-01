@@ -486,286 +486,290 @@
 0311  DD29              00485 	ADD IX,IX
 0313  DD2ABBAA          00486 	LD IX,($AABB)
 0317  DD2B              00487 	DEC IX
-0319  DD3605BB          00488 	LD (IX+5),$BB
-031D  DD39              00489 	ADD IX,SP
-031F  DD4605            00490 	LD B,(IX+5)
-0322  DD4E05            00491 	LD C,(IX+5)
-0325  DD5605            00492 	LD D,(IX+5)
-0328  DD5E05            00493 	LD E,(IX+5)
-032B  DD6605            00494 	LD H,(IX+5)
-032E  DD6E05            00495 	LD L,(IX+5)
-0331  DD7005            00496 	LD (IX+5),B
-0334  DD7105            00497 	LD (IX+5),C
-0337  DD7205            00498 	LD (IX+5),D
-033A  DD7305            00499 	LD (IX+5),E
-033D  DD7405            00500 	LD (IX+5),H
-0340  DD7505            00501 	LD (IX+5),L
-0343  DD7705            00502 	LD (IX+5),A
-0346  DD7E05            00503 	LD A,(IX+5)
-0349  DD8605            00504 	ADD A,(IX+5)
-034C  DD8E05            00505 	ADC A,(IX+5)
-034F  DD9605            00506 	SUB (IX+5)
-0352  DD9E05            00507 	SBC A,(IX+5)
-0355  DDA605            00508 	AND (IX+5)
-0358  DDAE05            00509 	XOR (IX+5)
-035B  DDB605            00510 	OR (IX+5)
-035E  DDBE05            00511 	CP (IX+5)
-0361  DDCB0506          00512 	RLC (IX+5)
-0365  DDCB050E          00513 	RRC (IX+5)
-0369  DDCB0516          00514 	RL (IX+5)
-036D  DDCB051E          00515 	RR (IX+5)
-0371  DDCB0526          00516 	SLA (IX+5)
-0375  DDCB052E          00517 	SRA (IX+5)
-0379  DDCB053E          00518 	SRL (IX+5)
-037D  DDCB0546          00519 	BIT 0,(IX+5)
-0381  DDCB057E          00520 	BIT 7,(IX+5)
-0385  DDCB0586          00521 	RES 0,(IX+5)
-0389  DDCB05BE          00522 	RES 7,(IX+5)
-038D  DDCB05C6          00523 	SET 0,(IX+5)
-0391  DDCB05FE          00524 	SET 7,(IX+5)
-0395  DDE1              00525 	POP IX
-0397  DDE3              00526 	EX (SP),IX
-0399  DDE5              00527 	PUSH IX
-039B  DDE9              00528 	JP (IX)
-039D  DDF9              00529 	LD SP,IX
-039F  DE55              00530 	SBC A,$55
-03A1  DF                00531 	RST 24
-03A2  E0                00532 	RET PO
-03A3  E1                00533 	POP HL
-03A4  E2BBAA            00534 	JP PO,$AABB
-03A7  E3                00535 	EX (SP),HL
-03A8  E4BBAA            00536 	CALL PO,$AABB
-03AB  E5                00537 	PUSH HL
-03AC  E655              00538 	AND $55
-03AE  E7                00539 	RST 32
-03AF  E8                00540 	RET PE
-03B0  E9                00541 	JP (HL)
-03B1  EABBAA            00542 	JP PE,$AABB
-03B4  EB                00543 	EX DE,HL
-03B5  ECBBAA            00544 	CALL PE,$AABB
-03B8  ED40              00545 	IN B,(C)
-03BA  ED41              00546 	OUT (C),B
-03BC  ED42              00547 	SBC HL,BC
-03BE  ED43BBAA          00548 	LD ($AABB),BC
-03C2  ED44              00549 	NEG
-03C4  ED45              00550 	RETN
-03C6  ED46              00551 	IM 0
-03C8  ED47              00552 	LD I,A
-03CA  ED48              00553 	IN C,(C)
-03CC  ED49              00554 	OUT (C),C
-03CE  ED4A              00555 	ADC HL,BC
-03D0  ED4BBBAA          00556 	LD BC,($AABB)
-03D4  ED4D              00557 	RETI
-03D6  ED4F              00558 	LD R,A
-03D8  ED50              00559 	IN D,(C)
-03DA  ED51              00560 	OUT (C),D
-03DC  ED52              00561 	SBC HL,DE
-03DE  ED53BBAA          00562 	LD ($AABB),DE
-03E2  ED56              00563 	IM 1
-03E4  ED57              00564 	LD A,I
-03E6  ED58              00565 	IN E,(C)
-03E8  ED59              00566 	OUT (C),E
-03EA  ED5A              00567 	ADC HL,DE
-03EC  ED5BBBAA          00568 	LD DE,($AABB)
-03F0  ED5E              00569 	IM 2
-03F2  ED5F              00570 	LD A,R
-03F4  ED62              00571 	SBC HL,HL
-03F6  ED67              00572 	RRD
-03F8  ED6A              00573 	ADC HL,HL
-03FA  ED6F              00574 	RLD
-03FC  ED72              00575 	SBC HL,SP
-03FE  ED73BBAA          00576 	LD ($AABB),SP
-0402  ED7A              00577 	ADC HL,SP
-0404  ED7BBBAA          00578 	LD SP,($AABB)
-0408  EDA0              00579 	LDI
-040A  EDA1              00580 	CPI
-040C  EDA2              00581 	INI
-040E  EDA3              00582 	OUTI
-0410  EDA8              00583 	LDD
-0412  EDA9              00584 	CPD
-0414  EDAA              00585 	IND
-0416  EDAB              00586 	OUTD
-0418  EDB0              00587 	LDIR
-041A  EDB1              00588 	CPIR
-041C  EDB2              00589 	INIR
-041E  EDB3              00590 	OTIR
-0420  EDB8              00591 	LDDR
-0422  EDB9              00592 	CPDR
-0424  EDBA              00593 	INDR
-0426  EDBB              00594 	OTDR
-0428  EE55              00595 	XOR $55
-042A  EF                00596 	RST 40
-042B  F0                00597 	RET P
-042C  F1                00598 	POP AF
-042D  F2BBAA            00599 	JP P,$AABB
-0430  F3                00600 	DI
-0431  F4BBAA            00601 	CALL P,$AABB
-0434  F5                00602 	PUSH AF
-0435  F655              00603 	OR $55
-0437  F7                00604 	RST $30
-0438  F8                00605 	RET M
-0439  F9                00606 	LD SP,HL
-043A  FABBAA            00607 	JP M,$AABB
-043D  FB                00608 	EI
-043E  FCBBAA            00609 	CALL M,$AABB
-0441  FD09              00610 	ADD IY,BC
-0443  FD19              00611 	ADD IY,DE
-0445  FD21BBAA          00612 	LD IY,$AABB
-0449  FD22BBAA          00613 	LD ($AABB),IY
-044D  FD23              00614 	INC IY
-044F  FD29              00615 	ADD IY,IY
-0451  FD2ABBAA          00616 	LD IY,($AABB)
-0455  FD2B              00617 	DEC IY
-0457  FD3605BB          00618 	LD (IY+5),$BB
-045B  FD39              00619 	ADD IY,SP
-045D  FD4605            00620 	LD B,(IY+5)
-0460  FD4E05            00621 	LD C,(IY+5)
-0463  FD5605            00622 	LD D,(IY+5)
-0466  FD5E05            00623 	LD E,(IY+5)
-0469  FD6605            00624 	LD H,(IY+5)
-046C  FD6E05            00625 	LD L,(IY+5)
-046F  FD7005            00626 	LD (IY+5),B
-0472  FD7105            00627 	LD (IY+5),C
-0475  FD7205            00628 	LD (IY+5),D
-0478  FD7305            00629 	LD (IY+5),E
-047B  FD7405            00630 	LD (IY+5),H
-047E  FD7505            00631 	LD (IY+5),L
-0481  FD7705            00632 	LD (IY+5),A
-0484  FD7E05            00633 	LD A,(IY+5)
-0487  FD8605            00634 	ADD A,(IY+5)
-048A  FD8E05            00635 	ADC A,(IY+5)
-048D  FD9605            00636 	SUB (IY+5)
-0490  FD9E05            00637 	SBC A,(IY+5)
-0493  FDA605            00638 	AND (IY+5)
-0496  FDAE05            00639 	XOR (IY+5)
-0499  FDB605            00640 	OR (IY+5)
-049C  FDBE05            00641 	CP (IY+5)
-049F  FDCB0506          00642 	RLC (IY+5)
-04A3  FDCB050E          00643 	RRC (IY+5)
-04A7  FDCB0516          00644 	RL (IY+5)
-04AB  FDCB051E          00645 	RR (IY+5)
-04AF  FDCB0526          00646 	SLA (IY+5)
-04B3  FDCB052E          00647 	SRA (IY+5)
-04B7  FDCB053E          00648 	SRL (IY+5)
-04BB  FDCB0546          00649 	BIT 0,(IY+5)
-04BF  FDCB057E          00650 	BIT 7,(IY+5)
-04C3  FDCB0586          00651 	RES 0,(IY+5)
-04C7  FDCB05BE          00652 	RES 7,(IY+5)
-04CB  FDCB05C6          00653 	SET 0,(IY+5)
-04CF  FDCB05FE          00654 	SET 7,(IY+5)
-04D3  FDE1              00655 	POP IY
-04D5  FDE3              00656 	EX (SP),IY
-04D7  FDE5              00657 	PUSH IY
-04D9  FDE9              00658 	JP (IY)
-04DB  FDF9              00659 	LD SP,IY
-04DD  FE55              00660 	CP $55
-04DF  FF                00661 	RST $38
-04E0                    00662 
-04E0                    00663 	; Undocumented instructions
-04E0  DD24              00664 	INC IXH
-04E2  DD25              00665 	DEC IXH
-04E4  DD2655            00666 	LD IXH,$55
-04E7  DD2C              00667 	INC IXL
-04E9  DD2D              00668 	DEC IXL
-04EB  DD2E55            00669 	LD IXL,$55
-04EE  DD44              00670 	LD B,IXH
-04F0  DD45              00671 	LD B,IXL
-04F2  DD4C              00672 	LD C,IXH
-04F4  DD4D              00673 	LD C,IXL
-04F6  DD54              00674 	LD D,IXH
-04F8  DD55              00675 	LD D,IXL
-04FA  DD5C              00676 	LD E,IXH
-04FC  DD5D              00677 	LD E,IXL
-04FE  DD60              00678 	LD IXH,B
-0500  DD61              00679 	LD IXH,C
-0502  DD62              00680 	LD IXH,D
-0504  DD63              00681 	LD IXH,E
-0506  DD64              00682 	LD IXH,IXH
-0508  DD65              00683 	LD IXH,IXL
-050A  DD67              00684 	LD IXH,A
-050C  DD68              00685 	LD IXL,B
-050E  DD69              00686 	LD IXL,C
-0510  DD6A              00687 	LD IXL,D
-0512  DD6B              00688 	LD IXL,E
-0514  DD6C              00689 	LD IXL,IXH
-0516  DD6D              00690 	LD IXL,IXL
-0518  DD6F              00691 	LD IXL,A
-051A  DD7C              00692 	LD A,IXH
-051C  DD7D              00693 	LD A,IXL
-051E  DD84              00694 	ADD A,IXH
-0520  DD85              00695 	ADD A,IXL
-0522  DD8C              00696 	ADC A,IXH
-0524  DD8D              00697 	ADC A,IXL
-0526  DD94              00698 	SUB IXH
-0528  DD95              00699 	SUB IXL
-052A  DD9C              00700 	SBC A,IXH
-052C  DD9D              00701 	SBC A,IXL
-052E  DDA4              00702 	AND IXH
-0530  DDA5              00703 	AND IXL
-0532  DDAC              00704 	XOR IXH
-0534  DDAD              00705 	XOR IXL
-0536  DDB4              00706 	OR IXH
-0538  DDB5              00707 	OR IXL
-053A  DDBC              00708 	CP IXH
-053C  DDBD              00709 	CP IXL
-053E                    00710 
-053E  FD24              00711 	INC IYH
-0540  FD25              00712 	DEC IYH
-0542  FD2655            00713 	LD IYH,$55
-0545  FD2C              00714 	INC IYL
-0547  FD2D              00715 	DEC IYL
-0549  FD2E55            00716 	LD IYL,$55
-054C  FD44              00717 	LD B,IYH
-054E  FD45              00718 	LD B,IYL
-0550  FD4C              00719 	LD C,IYH
-0552  FD4D              00720 	LD C,IYL
-0554  FD54              00721 	LD D,IYH
-0556  FD55              00722 	LD D,IYL
-0558  FD5C              00723 	LD E,IYH
-055A  FD5D              00724 	LD E,IYL
-055C  FD60              00725 	LD IYH,B
-055E  FD61              00726 	LD IYH,C
-0560  FD62              00727 	LD IYH,D
-0562  FD63              00728 	LD IYH,E
-0564  FD64              00729 	LD IYH,IYH
-0566  FD65              00730 	LD IYH,IYL
-0568  FD67              00731 	LD IYH,A
-056A  FD68              00732 	LD IYL,B
-056C  FD69              00733 	LD IYL,C
-056E  FD6A              00734 	LD IYL,D
-0570  FD6B              00735 	LD IYL,E
-0572  FD6C              00736 	LD IYL,IYH
-0574  FD6D              00737 	LD IYL,IYL
-0576  FD6F              00738 	LD IYL,A
-0578  FD7C              00739 	LD A,IYH
-057A  FD7D              00740 	LD A,IYL
-057C  FD84              00741 	ADD A,IYH
-057E  FD85              00742 	ADD A,IYL
-0580  FD8C              00743 	ADC A,IYH
-0582  FD8D              00744 	ADC A,IYL
-0584  FD94              00745 	SUB IYH
-0586  FD95              00746 	SUB IYL
-0588  FD9C              00747 	SBC A,IYH
-058A  FD9D              00748 	SBC A,IYL
-058C  FDA4              00749 	AND IYH
-058E  FDA5              00750 	AND IYL
-0590  FDAC              00751 	XOR IYH
-0592  FDAD              00752 	XOR IYL
-0594  FDB4              00753 	OR IYH
-0596  FDB5              00754 	OR IYL
-0598  FDBC              00755 	CP IYH
-059A  FDBD              00756 	CP IYL
-059C  CB30              00757 	SLL B
-059E  CB31              00758 	SLL C
-05A0  CB32              00759 	SLL D
-05A2  CB33              00760 	SLL E
-05A4  CB34              00761 	SLL H
-05A6  CB35              00762 	SLL L
-05A8  CB36              00763 	SLL (HL)
-05AA  CB37              00764 	SLL A
+0319  DD3405            00488 	INC (IX+5)
+031C  DD3505            00489 	DEC (IX+5)
+031F  DD3605BB          00490 	LD (IX+5),$BB
+0323  DD39              00491 	ADD IX,SP
+0325  DD4605            00492 	LD B,(IX+5)
+0328  DD4E05            00493 	LD C,(IX+5)
+032B  DD5605            00494 	LD D,(IX+5)
+032E  DD5E05            00495 	LD E,(IX+5)
+0331  DD6605            00496 	LD H,(IX+5)
+0334  DD6E05            00497 	LD L,(IX+5)
+0337  DD7005            00498 	LD (IX+5),B
+033A  DD7105            00499 	LD (IX+5),C
+033D  DD7205            00500 	LD (IX+5),D
+0340  DD7305            00501 	LD (IX+5),E
+0343  DD7405            00502 	LD (IX+5),H
+0346  DD7505            00503 	LD (IX+5),L
+0349  DD7705            00504 	LD (IX+5),A
+034C  DD7E05            00505 	LD A,(IX+5)
+034F  DD8605            00506 	ADD A,(IX+5)
+0352  DD8E05            00507 	ADC A,(IX+5)
+0355  DD9605            00508 	SUB (IX+5)
+0358  DD9E05            00509 	SBC A,(IX+5)
+035B  DDA605            00510 	AND (IX+5)
+035E  DDAE05            00511 	XOR (IX+5)
+0361  DDB605            00512 	OR (IX+5)
+0364  DDBE05            00513 	CP (IX+5)
+0367  DDCB0506          00514 	RLC (IX+5)
+036B  DDCB050E          00515 	RRC (IX+5)
+036F  DDCB0516          00516 	RL (IX+5)
+0373  DDCB051E          00517 	RR (IX+5)
+0377  DDCB0526          00518 	SLA (IX+5)
+037B  DDCB052E          00519 	SRA (IX+5)
+037F  DDCB053E          00520 	SRL (IX+5)
+0383  DDCB0546          00521 	BIT 0,(IX+5)
+0387  DDCB057E          00522 	BIT 7,(IX+5)
+038B  DDCB0586          00523 	RES 0,(IX+5)
+038F  DDCB05BE          00524 	RES 7,(IX+5)
+0393  DDCB05C6          00525 	SET 0,(IX+5)
+0397  DDCB05FE          00526 	SET 7,(IX+5)
+039B  DDE1              00527 	POP IX
+039D  DDE3              00528 	EX (SP),IX
+039F  DDE5              00529 	PUSH IX
+03A1  DDE9              00530 	JP (IX)
+03A3  DDF9              00531 	LD SP,IX
+03A5  DE55              00532 	SBC A,$55
+03A7  DF                00533 	RST 24
+03A8  E0                00534 	RET PO
+03A9  E1                00535 	POP HL
+03AA  E2BBAA            00536 	JP PO,$AABB
+03AD  E3                00537 	EX (SP),HL
+03AE  E4BBAA            00538 	CALL PO,$AABB
+03B1  E5                00539 	PUSH HL
+03B2  E655              00540 	AND $55
+03B4  E7                00541 	RST 32
+03B5  E8                00542 	RET PE
+03B6  E9                00543 	JP (HL)
+03B7  EABBAA            00544 	JP PE,$AABB
+03BA  EB                00545 	EX DE,HL
+03BB  ECBBAA            00546 	CALL PE,$AABB
+03BE  ED40              00547 	IN B,(C)
+03C0  ED41              00548 	OUT (C),B
+03C2  ED42              00549 	SBC HL,BC
+03C4  ED43BBAA          00550 	LD ($AABB),BC
+03C8  ED44              00551 	NEG
+03CA  ED45              00552 	RETN
+03CC  ED46              00553 	IM 0
+03CE  ED47              00554 	LD I,A
+03D0  ED48              00555 	IN C,(C)
+03D2  ED49              00556 	OUT (C),C
+03D4  ED4A              00557 	ADC HL,BC
+03D6  ED4BBBAA          00558 	LD BC,($AABB)
+03DA  ED4D              00559 	RETI
+03DC  ED4F              00560 	LD R,A
+03DE  ED50              00561 	IN D,(C)
+03E0  ED51              00562 	OUT (C),D
+03E2  ED52              00563 	SBC HL,DE
+03E4  ED53BBAA          00564 	LD ($AABB),DE
+03E8  ED56              00565 	IM 1
+03EA  ED57              00566 	LD A,I
+03EC  ED58              00567 	IN E,(C)
+03EE  ED59              00568 	OUT (C),E
+03F0  ED5A              00569 	ADC HL,DE
+03F2  ED5BBBAA          00570 	LD DE,($AABB)
+03F6  ED5E              00571 	IM 2
+03F8  ED5F              00572 	LD A,R
+03FA  ED62              00573 	SBC HL,HL
+03FC  ED67              00574 	RRD
+03FE  ED6A              00575 	ADC HL,HL
+0400  ED6F              00576 	RLD
+0402  ED72              00577 	SBC HL,SP
+0404  ED73BBAA          00578 	LD ($AABB),SP
+0408  ED7A              00579 	ADC HL,SP
+040A  ED7BBBAA          00580 	LD SP,($AABB)
+040E  EDA0              00581 	LDI
+0410  EDA1              00582 	CPI
+0412  EDA2              00583 	INI
+0414  EDA3              00584 	OUTI
+0416  EDA8              00585 	LDD
+0418  EDA9              00586 	CPD
+041A  EDAA              00587 	IND
+041C  EDAB              00588 	OUTD
+041E  EDB0              00589 	LDIR
+0420  EDB1              00590 	CPIR
+0422  EDB2              00591 	INIR
+0424  EDB3              00592 	OTIR
+0426  EDB8              00593 	LDDR
+0428  EDB9              00594 	CPDR
+042A  EDBA              00595 	INDR
+042C  EDBB              00596 	OTDR
+042E  EE55              00597 	XOR $55
+0430  EF                00598 	RST 40
+0431  F0                00599 	RET P
+0432  F1                00600 	POP AF
+0433  F2BBAA            00601 	JP P,$AABB
+0436  F3                00602 	DI
+0437  F4BBAA            00603 	CALL P,$AABB
+043A  F5                00604 	PUSH AF
+043B  F655              00605 	OR $55
+043D  F7                00606 	RST $30
+043E  F8                00607 	RET M
+043F  F9                00608 	LD SP,HL
+0440  FABBAA            00609 	JP M,$AABB
+0443  FB                00610 	EI
+0444  FCBBAA            00611 	CALL M,$AABB
+0447  FD09              00612 	ADD IY,BC
+0449  FD19              00613 	ADD IY,DE
+044B  FD21BBAA          00614 	LD IY,$AABB
+044F  FD22BBAA          00615 	LD ($AABB),IY
+0453  FD23              00616 	INC IY
+0455  FD29              00617 	ADD IY,IY
+0457  FD2ABBAA          00618 	LD IY,($AABB)
+045B  FD2B              00619 	DEC IY
+045D  FD3405            00620 	INC (IY+5)
+0460  FD3505            00621 	DEC (IY+5)
+0463  FD3605BB          00622 	LD (IY+5),$BB
+0467  FD39              00623 	ADD IY,SP
+0469  FD4605            00624 	LD B,(IY+5)
+046C  FD4E05            00625 	LD C,(IY+5)
+046F  FD5605            00626 	LD D,(IY+5)
+0472  FD5E05            00627 	LD E,(IY+5)
+0475  FD6605            00628 	LD H,(IY+5)
+0478  FD6E05            00629 	LD L,(IY+5)
+047B  FD7005            00630 	LD (IY+5),B
+047E  FD7105            00631 	LD (IY+5),C
+0481  FD7205            00632 	LD (IY+5),D
+0484  FD7305            00633 	LD (IY+5),E
+0487  FD7405            00634 	LD (IY+5),H
+048A  FD7505            00635 	LD (IY+5),L
+048D  FD7705            00636 	LD (IY+5),A
+0490  FD7E05            00637 	LD A,(IY+5)
+0493  FD8605            00638 	ADD A,(IY+5)
+0496  FD8E05            00639 	ADC A,(IY+5)
+0499  FD9605            00640 	SUB (IY+5)
+049C  FD9E05            00641 	SBC A,(IY+5)
+049F  FDA605            00642 	AND (IY+5)
+04A2  FDAE05            00643 	XOR (IY+5)
+04A5  FDB605            00644 	OR (IY+5)
+04A8  FDBE05            00645 	CP (IY+5)
+04AB  FDCB0506          00646 	RLC (IY+5)
+04AF  FDCB050E          00647 	RRC (IY+5)
+04B3  FDCB0516          00648 	RL (IY+5)
+04B7  FDCB051E          00649 	RR (IY+5)
+04BB  FDCB0526          00650 	SLA (IY+5)
+04BF  FDCB052E          00651 	SRA (IY+5)
+04C3  FDCB053E          00652 	SRL (IY+5)
+04C7  FDCB0546          00653 	BIT 0,(IY+5)
+04CB  FDCB057E          00654 	BIT 7,(IY+5)
+04CF  FDCB0586          00655 	RES 0,(IY+5)
+04D3  FDCB05BE          00656 	RES 7,(IY+5)
+04D7  FDCB05C6          00657 	SET 0,(IY+5)
+04DB  FDCB05FE          00658 	SET 7,(IY+5)
+04DF  FDE1              00659 	POP IY
+04E1  FDE3              00660 	EX (SP),IY
+04E3  FDE5              00661 	PUSH IY
+04E5  FDE9              00662 	JP (IY)
+04E7  FDF9              00663 	LD SP,IY
+04E9  FE55              00664 	CP $55
+04EB  FF                00665 	RST $38
+04EC                    00666 
+04EC                    00667 	; Undocumented instructions
+04EC  DD24              00668 	INC IXH
+04EE  DD25              00669 	DEC IXH
+04F0  DD2655            00670 	LD IXH,$55
+04F3  DD2C              00671 	INC IXL
+04F5  DD2D              00672 	DEC IXL
+04F7  DD2E55            00673 	LD IXL,$55
+04FA  DD44              00674 	LD B,IXH
+04FC  DD45              00675 	LD B,IXL
+04FE  DD4C              00676 	LD C,IXH
+0500  DD4D              00677 	LD C,IXL
+0502  DD54              00678 	LD D,IXH
+0504  DD55              00679 	LD D,IXL
+0506  DD5C              00680 	LD E,IXH
+0508  DD5D              00681 	LD E,IXL
+050A  DD60              00682 	LD IXH,B
+050C  DD61              00683 	LD IXH,C
+050E  DD62              00684 	LD IXH,D
+0510  DD63              00685 	LD IXH,E
+0512  DD64              00686 	LD IXH,IXH
+0514  DD65              00687 	LD IXH,IXL
+0516  DD67              00688 	LD IXH,A
+0518  DD68              00689 	LD IXL,B
+051A  DD69              00690 	LD IXL,C
+051C  DD6A              00691 	LD IXL,D
+051E  DD6B              00692 	LD IXL,E
+0520  DD6C              00693 	LD IXL,IXH
+0522  DD6D              00694 	LD IXL,IXL
+0524  DD6F              00695 	LD IXL,A
+0526  DD7C              00696 	LD A,IXH
+0528  DD7D              00697 	LD A,IXL
+052A  DD84              00698 	ADD A,IXH
+052C  DD85              00699 	ADD A,IXL
+052E  DD8C              00700 	ADC A,IXH
+0530  DD8D              00701 	ADC A,IXL
+0532  DD94              00702 	SUB IXH
+0534  DD95              00703 	SUB IXL
+0536  DD9C              00704 	SBC A,IXH
+0538  DD9D              00705 	SBC A,IXL
+053A  DDA4              00706 	AND IXH
+053C  DDA5              00707 	AND IXL
+053E  DDAC              00708 	XOR IXH
+0540  DDAD              00709 	XOR IXL
+0542  DDB4              00710 	OR IXH
+0544  DDB5              00711 	OR IXL
+0546  DDBC              00712 	CP IXH
+0548  DDBD              00713 	CP IXL
+054A                    00714 
+054A  FD24              00715 	INC IYH
+054C  FD25              00716 	DEC IYH
+054E  FD2655            00717 	LD IYH,$55
+0551  FD2C              00718 	INC IYL
+0553  FD2D              00719 	DEC IYL
+0555  FD2E55            00720 	LD IYL,$55
+0558  FD44              00721 	LD B,IYH
+055A  FD45              00722 	LD B,IYL
+055C  FD4C              00723 	LD C,IYH
+055E  FD4D              00724 	LD C,IYL
+0560  FD54              00725 	LD D,IYH
+0562  FD55              00726 	LD D,IYL
+0564  FD5C              00727 	LD E,IYH
+0566  FD5D              00728 	LD E,IYL
+0568  FD60              00729 	LD IYH,B
+056A  FD61              00730 	LD IYH,C
+056C  FD62              00731 	LD IYH,D
+056E  FD63              00732 	LD IYH,E
+0570  FD64              00733 	LD IYH,IYH
+0572  FD65              00734 	LD IYH,IYL
+0574  FD67              00735 	LD IYH,A
+0576  FD68              00736 	LD IYL,B
+0578  FD69              00737 	LD IYL,C
+057A  FD6A              00738 	LD IYL,D
+057C  FD6B              00739 	LD IYL,E
+057E  FD6C              00740 	LD IYL,IYH
+0580  FD6D              00741 	LD IYL,IYL
+0582  FD6F              00742 	LD IYL,A
+0584  FD7C              00743 	LD A,IYH
+0586  FD7D              00744 	LD A,IYL
+0588  FD84              00745 	ADD A,IYH
+058A  FD85              00746 	ADD A,IYL
+058C  FD8C              00747 	ADC A,IYH
+058E  FD8D              00748 	ADC A,IYL
+0590  FD94              00749 	SUB IYH
+0592  FD95              00750 	SUB IYL
+0594  FD9C              00751 	SBC A,IYH
+0596  FD9D              00752 	SBC A,IYL
+0598  FDA4              00753 	AND IYH
+059A  FDA5              00754 	AND IYL
+059C  FDAC              00755 	XOR IYH
+059E  FDAD              00756 	XOR IYL
+05A0  FDB4              00757 	OR IYH
+05A2  FDB5              00758 	OR IYL
+05A4  FDBC              00759 	CP IYH
+05A6  FDBD              00760 	CP IYL
+05A8  CB30              00761 	SLL B
+05AA  CB31              00762 	SLL C
+05AC  CB32              00763 	SLL D
+05AE  CB33              00764 	SLL E
+05B0  CB34              00765 	SLL H
+05B2  CB35              00766 	SLL L
+05B4  CB36              00767 	SLL (HL)
+05B6  CB37              00768 	SLL A
 
 00000 ERRORS FOUND
 00000 WARNINGS FOUND
 
-01452 PROGRAM BYTES
+01464 PROGRAM BYTES
 
