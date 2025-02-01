@@ -922,6 +922,8 @@ char *read_character(char *p, int *c)
             }
         } else {
             p--;
+            *c = *p;
+            p++;
             message(1, "bad escape inside string");
         }
     } else {
