@@ -17,6 +17,8 @@ There is also the -d option for defining labels:
 
     -dLABEL
     -dANOTHER_LABEL=1
+    
+The option -sms will patch the final ROM with a valid Sega Master System checksum at the offset 0x7ffa, just make sure your assembler file has the right header at 0x7ff0-0x7fff (CVBasic has a sample header in _cvbasic_epilogue.asm_)
 
 It returns a non-zero error code when the assembled file generates errors.
 

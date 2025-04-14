@@ -2296,6 +2296,7 @@ int main(int argc, char *argv[])
     int d;
     char *p;
     char *ifname;
+    int sms_checksum;
     
     /*
      ** If ran without arguments then show usage
@@ -2305,6 +2306,7 @@ int main(int argc, char *argv[])
         fprintf(stderr, "gasm80 game.asm -o game.rom\n");
         fprintf(stderr, "gasm80 game.asm -o game.rom -l game.lst\n");
         fprintf(stderr, "gasm80 game.asm -o game.rom -l game.lst -s game.sym\n");
+        fprintf(stderr, "gasm80 game.asm -o game.rom -sms\n");
         exit(1);
     }
     
@@ -2316,11 +2318,15 @@ int main(int argc, char *argv[])
     listing_filename = NULL;
     symbol_filename = NULL;
     default_start_address = 0;
+    sms_checksum = 0;
     c = 1;
     while (c < argc) {
         if (argv[c][0] == '-') {    /* All arguments start with dash */
             d = tolower(argv[c][1]);
-            if (d == 'f') { /* Format */
+            if (d == 's' && tolower(argv[c][2]) == 'm' && tolower(argv[c][3]) == 's' && argv[c][4] == '\0') {
+                c++;
+                sms_checksum = 1;
+            } else if (d == 'f') { /* Format */
                 c++;
                 if (c >= argc) {
                     fprintf(stderr, "Error: no argument for -f\n");
@@ -2498,7 +2504,7 @@ int main(int argc, char *argv[])
                     exit(1);
                 }
             }
-            output = fopen(output_filename, "wb");
+            output = fopen(output_filename, "w+b");
             if (output == NULL) {
                 fprintf(stderr, "Error: couldn't open '%s' as output file\n", output_filename);
                 exit(1);
@@ -2519,6 +2525,21 @@ int main(int argc, char *argv[])
                     if (listing != NULL)
                         fprintf(listing, "%-20s VALUE/ADDRESS\n\n", "LABEL");
                     sort_labels(label_list);
+                }
+            }
+            if (sms_checksum) {
+                fseek(output, 0, SEEK_END);
+                c = ftell(output);
+                if (c >= 32768) {
+                    fseek(output, 0, SEEK_SET);
+                    c = 0;
+                    for (d = 0; d < 0x7ff0; d++)
+                        c = c + (fgetc(output) & 0xff);
+                    fseek(output, 0x7ffa, SEEK_SET);
+                    fputc(c & 0xff, output);
+                    fputc((c >> 8) & 0xff, output);
+                } else {
+                    fprintf(stderr, "Sega Master System: ROM less than 32KB, cannot generate checksum\n");
                 }
             }
             fclose(output);
