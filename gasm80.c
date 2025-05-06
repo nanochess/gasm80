@@ -1705,9 +1705,13 @@ void process_instruction(void)
                     fprintf(stderr, "Error: unterminated string at line %d\n", line_number);
                 }
             } else {
+                undefined = 0;
                 p2 = match_expression(p, &instruction_value);
                 if (p2 == NULL) {
                     fprintf(stderr, "Error: bad expression at line %d\n", line_number);
+                    break;
+                } else if (assembler_step == 2 && undefined) {
+                    fprintf(stderr, "Error: undefined label '%s' at line %d\n", undefined_name, line_number);
                     break;
                 }
                 emit_byte(instruction_value);
@@ -1725,9 +1729,13 @@ void process_instruction(void)
     }
     if (strcmp(part, "DW") == 0) {  /* Define word */
         while (1) {
+            undefined = 0;
             p2 = match_expression(p, &instruction_value);
             if (p2 == NULL) {
                 fprintf(stderr, "Error: bad expression at line %d\n", line_number);
+                break;
+            } else if (assembler_step == 2 && undefined) {
+                fprintf(stderr, "Error: undefined label '%s' at line %d\n", undefined_name, line_number);
                 break;
             }
             emit_byte(instruction_value);
