@@ -3,11 +3,15 @@
 # https://github.com/nanochess/gasm80
 #
 build:
-	@cc gasm80.c -o gasm80
+	@$(CC) gasm80.c -o gasm80
+
+check: build
+	-./gasm80 test/hello.asm -o /tmp/game.rom
+	-./gasm80 test/test.asm -o /tmp/game.rom
+	./gasm80 test/test6502.asm -o /tmp/game.rom
 
 clean:
 	@rm gasm80
 
 love:
 	@echo "...not war"
-
