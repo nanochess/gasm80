@@ -1266,7 +1266,7 @@ void emit_byte(int byte)
     char buf[1];
     
     if (assembler_step == 2) {
-        if (output_address != -1) {
+        if (output_address == -1) {
             output_address = address;
         } else if (address < output_address) {
             fprintf(stderr, "Error: ORG went backward %04x vs previous %04x\n", address, output_address);
@@ -2186,7 +2186,11 @@ void do_assembly(char *fname)
                         base = instruction_value;
                     }
                     address = instruction_value;
-                    output_address = instruction_value;
+                    /*
+                     ** Notice it cannot change output_address here
+                     ** because it could require filling it to get to
+                     ** the address.
+                     */
                     check_end(p2);
                 }
                 break;
@@ -2203,6 +2207,7 @@ void do_assembly(char *fname)
                     if (assembler_step == 2)
                         fseek(output, instruction_value, SEEK_SET);
                     first_time = 1;
+                    output_address = -1;    /* Avoid unnecessary filling */
                     check_end(p2);
                 }
                 break;
