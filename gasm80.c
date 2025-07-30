@@ -2524,6 +2524,7 @@ int main(int argc, char *argv[])
             }
             assembler_step = 2;
             first_time = 1;
+            output_address = -1;
             building_jumps = 0;
             current_jump = first_jump;
             do_assembly(ifname);
