@@ -12,6 +12,8 @@ It was developed in a single day based on my tinyasm 8088 assembler available at
 It uses a command line syntax similar to nasm:
 
     gasm80 game.asm -o game.rom -l game.lst -s game.sym
+    
+The input file is _game.asm_ and the output file is given with the -o option. You can also get a listing with the machine code using the -l option, and a symbol table with the -s option (this symbol table is compatible with emulators supporting it like BlueMSX)
 
 There is also the -d option for defining labels:
 
