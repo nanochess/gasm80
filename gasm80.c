@@ -1541,7 +1541,6 @@ char *match(char *p, char *pattern, char *decode)
                             if (building_jumps) {
                                 new_jump = malloc(sizeof(struct extend_jump));
                                 new_jump->next = NULL;
-                                new_jump->address = address - 1;
                                 new_jump->target = instruction_value;
                                 new_jump->relative = 1;
                                 if (first_jump == NULL)
@@ -1555,10 +1554,10 @@ char *match(char *p, char *pattern, char *decode)
                                     fprintf(stderr, "decode: internal error 3. New jump instructions!\n");
                                     exit(1);
                                 }
-                                new_jump->address = address - 1;
-                                new_jump->target = instruction_value;
                                 current_jump = current_jump->next;
                             }
+                            new_jump->address = address;
+                            new_jump->target = instruction_value;
                             if (new_jump->relative) {
                                 c = instruction_value - (address + 2);
                             } else {
