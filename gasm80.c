@@ -1541,7 +1541,6 @@ char *match(char *p, char *pattern, char *decode)
                             if (building_jumps) {
                                 new_jump = malloc(sizeof(struct extend_jump));
                                 new_jump->next = NULL;
-                                new_jump->target = instruction_value;
                                 new_jump->relative = 1;
                                 if (first_jump == NULL)
                                     first_jump = new_jump;
