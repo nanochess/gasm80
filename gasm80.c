@@ -2078,9 +2078,13 @@ void do_assembly(char *fname)
                 break;
             }
             if (strcmp(part, "ENDIF") == 0) {
-                if (avoid_level == level)
-                    avoid_level = -1;
-                level--;
+                if (level == 0) {
+                    message(1, "ENDIF without IF");
+                } else {
+                    if (avoid_level == level)
+                        avoid_level = -1;
+                    level--;
+                }
                 check_end(p);
                 break;
             }
